@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import random
 
 from flask import Flask
 from flask import Flask, render_template
@@ -22,6 +23,11 @@ app = Flask(__name__)
 ask = Ask(app, "/")
 
 logging.getLogger("flask_ask").setLevel(logging.INFO)
+
+greetings = open("greetings.txt").readlines()
+sentences = open("sentences.txt").readlines()
+
+
 
 @app.route('/')
 def hello():
@@ -36,13 +42,26 @@ def server_error(e):
 @ask.launch
 def random_tricky_word_sentence():
 
-    msg = "Hello mister finn here's a lovely sentence for you: The circulating air turbines were full of muffins?"
-    msg += "Would you like me to repeat it?"
-    return question(msg)
+    random_sentence = random.choice(sentences)
+    msg = "<speak>"
+    msg += "<s>%s!</s>" % random.choice(greetings)
+    msg += "<s>Please write down the following sentence: %s.</s>" % random_sentence
+    msg += "<s>I repeat: <emphasis level='strong'>%s.</emphasis></s>" % random_sentence
+    msg += "</speak>"
+
+    return statement(msg)
 
 @ask.intent("YesIntent")
 def sentence():
-    return statement("ok, one more time: The circulating air turbines were full of muffins")
+    return statement("""
+    <speak>
+        ok, one more time: <emphasis level='strong'>The circulating air turbines were full of muffins</emphasis>
+    </speak>
+    """)
+
+@ask.intent("NoIntent")
+def sentence():
+    return statement("ok.")
 
 if __name__ == '__main__':
     app.run(debug=True)
