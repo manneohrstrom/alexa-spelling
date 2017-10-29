@@ -23,9 +23,9 @@ ask = Ask(app, "/")
 
 logging.getLogger("flask_ask").setLevel(logging.INFO)
 
-# @app.route('/')
-# def hello():
-#     return 'Hello World!'
+@app.route('/')
+def hello():
+    return 'Hello World!'
 
 @app.errorhandler(500)
 def server_error(e):
@@ -35,7 +35,14 @@ def server_error(e):
 
 @ask.launch
 def random_tricky_word_sentence():
-    return statement("There are many words that are tricky.")
+
+    msg = "Hello mister finn here's a lovely sentence for you: The circulating air turbines were full of muffins?"
+    msg += "Would you like me to repeat it?"
+    return question(msg)
+
+@ask.intent("YesIntent")
+def sentence():
+    return statement("ok, one more time: The circulating air turbines were full of muffins")
 
 if __name__ == '__main__':
     app.run(debug=True)
