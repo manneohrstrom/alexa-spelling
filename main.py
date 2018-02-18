@@ -22,14 +22,10 @@ from flask_ask import Ask, statement, question, session
 app = Flask(__name__)
 ask = Ask(app, "/")
 
-hamster_ask = Ask(app, "/hamster")
-
 logging.getLogger("flask_ask").setLevel(logging.INFO)
 
 greetings = open("greetings.txt").readlines()
 sentences = open("sentences.txt").readlines()
-
-sentences = open("hamster_sentences.txt").readlines()
 
 
 
@@ -47,30 +43,6 @@ def server_error(e):
 def random_tricky_word_sentence():
 
     random_sentence = random.choice(sentences)
-    msg = "<speak>"
-    msg += "<s>%s!</s>" % random.choice(greetings)
-    msg += "<s>Please write down the following sentence: %s.</s>" % random_sentence
-    msg += "<s>I repeat: <emphasis level='strong'>%s.</emphasis></s>" % random_sentence
-    msg += "</speak>"
-
-    return statement(msg)
-
-@ask.intent("YesIntent")
-def sentence():
-    return statement("""
-    <speak>
-        ok, one more time: <emphasis level='strong'>The circulating air turbines were full of muffins</emphasis>
-    </speak>
-    """)
-
-@ask.intent("NoIntent")
-def sentence():
-    return statement("ok.")
-
-@hamster_ask.launch
-def random_hamster_sentence():
-
-    random_sentence = random.choice(hamster_sentences)
     msg = "<speak>"
     msg += "<s>%s!</s>" % random.choice(greetings)
     msg += "<s>Please write down the following sentence: %s.</s>" % random_sentence
