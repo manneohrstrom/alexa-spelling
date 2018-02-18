@@ -51,6 +51,18 @@ def random_tricky_word_sentence():
 
     return statement(msg)
 
+@ask.intent("YesIntent")
+def sentence():
+    return statement("""
+    <speak>
+        ok, one more time: <emphasis level='strong'>The circulating air turbines were full of muffins</emphasis>
+    </speak>
+    """)
+
+@ask.intent("NoIntent")
+def sentence():
+    return statement("ok.")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
