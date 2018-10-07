@@ -25,7 +25,8 @@ ask = Ask(app, "/")
 logging.getLogger("flask_ask").setLevel(logging.INFO)
 
 greetings = open("greetings.txt").readlines()
-sentences = open("sentences.txt").readlines()
+new_sentences = open("new_sentences.txt").readlines()
+old_sentences = open("old_sentences.txt").readlines()
 
 
 
@@ -42,7 +43,10 @@ def server_error(e):
 @ask.launch
 def random_tricky_word_sentence():
 
-    random_sentence = random.choice(sentences)
+    if random.randint(0,10) > 8:
+        random_sentence = random.choice(old_sentences)
+    else:
+        random_sentence = random.choice(new_sentences)
     msg = "<speak>"
     msg += "<s>%s!</s>" % random.choice(greetings)
     msg += "<s>Please write down the following sentence: %s.</s>" % random_sentence
